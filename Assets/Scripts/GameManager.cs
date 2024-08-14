@@ -13,6 +13,8 @@ public enum Difficulty
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public static Dictionary<Difficulty, float> difficultySpawnRate = new Dictionary<Difficulty, float>()
     {
         { Difficulty.Easy, 3 },
@@ -128,6 +130,17 @@ public class GameManager : MonoBehaviour
         isGamePaused = false;
         Time.timeScale = 1;
         pauseUI.SetActive(false);
+    }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
     }
 
     // Start is called before the first frame update

@@ -5,7 +5,6 @@ using UnityEngine;
 public class Target : MonoBehaviour
 {
     private Rigidbody rigidbody;
-    private GameManager gameManager;
     public ParticleSystem explosionParticle;
 
     private float initialForceMin = 12;
@@ -41,7 +40,6 @@ public class Target : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
 
         rigidbody.AddForce(RandomUpwardForce(), ForceMode.Impulse);
         rigidbody.AddTorque(RandomTorque(), ForceMode.Impulse);
@@ -58,7 +56,7 @@ public class Target : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameManager.IsGameOver)
+        if (GameManager.Instance.IsGameOver)
         {
             DestroyWithExplosion();
         }
@@ -66,17 +64,17 @@ public class Target : MonoBehaviour
 
     void HandleCollision()
     {
-        if (gameManager.IsGamePaused) { return; }
+        if (GameManager.Instance.IsGamePaused) { return; }
 
         DestroyWithExplosion();
 
         if (isBadTarget)
         {
-            gameManager.BadTargetDestroyed();
+            GameManager.Instance.BadTargetDestroyed();
         }
         else
         {
-            gameManager.GoodTargetDestroyed();
+            GameManager.Instance.GoodTargetDestroyed();
         }
         
     }
@@ -102,7 +100,7 @@ public class Target : MonoBehaviour
 
         if (!isBadTarget)
         {
-            gameManager.DeductLives();
+            GameManager.Instance.DeductLives();
         }
     }
 }
