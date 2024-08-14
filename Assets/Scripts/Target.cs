@@ -1,49 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Target : MonoBehaviour
 {
-    private Rigidbody rigidbody;
-    public ParticleSystem explosionParticle;
+    float xRange = 4;
+    float yPosition = -2;
 
-    private float initialForceMin = 12;
-    private float initialForceMax = 16;
-    private float torqueRange = 10;
+    float initialForceMin = 12;
+    float initialForceMax = 16;
+    float torqueRange = 10;
 
-    private float xRange = 4;
-    private float yPosition = -2;
+    [SerializeField] bool isBadTarget;
+    [SerializeField] ParticleSystem explosionParticle;
 
-    public bool isBadTarget;
+    Rigidbody rigidbody;
 
     Vector3 RandomUpwardForce()
     {
         return Vector3.up * Random.Range(initialForceMin, initialForceMax);
     }
 
-    float RandomAxisTorque()
-    {
-        return Random.Range(-torqueRange, torqueRange);
-    }
-
     Vector3 RandomTorque()
     {
+        float RandomAxisTorque(){ return Random.Range(-torqueRange, torqueRange); }
+
         return new Vector3(RandomAxisTorque(), RandomAxisTorque(), RandomAxisTorque());
     }
 
     Vector3 RandomPosition()
     {
         return new Vector3(Random.Range(-xRange, xRange), yPosition);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        rigidbody = GetComponent<Rigidbody>();
-
-        rigidbody.AddForce(RandomUpwardForce(), ForceMode.Impulse);
-        rigidbody.AddTorque(RandomTorque(), ForceMode.Impulse);
-        transform.position = RandomPosition();
     }
 
     void DestroyWithExplosion()
@@ -53,16 +39,12 @@ public class Target : MonoBehaviour
         Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
     }
 
-    // Update is called once per frame
-    void Update()
+    void DestroyByGameOver()
     {
-        if (GameManager.Instance.IsGameOver)
-        {
-            DestroyWithExplosion();
-        }
+        DestroyWithExplosion();
     }
 
-    void HandleCollision()
+    void DestroyByMouse()
     {
         if (GameManager.Instance.IsGamePaused) { return; }
 
@@ -76,7 +58,37 @@ public class Target : MonoBehaviour
         {
             GameManager.Instance.GoodTargetDestroyed();
         }
-        
+
+    }
+
+    void DestroyByBound()
+    {
+        Destroy(gameObject);
+
+        if (!isBadTarget)
+        {
+            GameManager.Instance.DeductLives();
+        }
+    }
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        rigidbody = GetComponent<Rigidbody>();
+
+        rigidbody.AddForce(RandomUpwardForce(), ForceMode.Impulse);
+        rigidbody.AddTorque(RandomTorque(), ForceMode.Impulse);
+
+        transform.position = RandomPosition();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (GameManager.Instance.IsGameOver)
+        {
+            DestroyByGameOver();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -86,7 +98,7 @@ public class Target : MonoBehaviour
         switch (other.tag)
         {
             case "Mouse":
-                HandleCollision();
+                DestroyByMouse();
 
                 break;
             default:
@@ -96,11 +108,6 @@ public class Target : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Destroy(gameObject);
-
-        if (!isBadTarget)
-        {
-            GameManager.Instance.DeductLives();
-        }
+        DestroyByBound();
     }
 }
