@@ -67,7 +67,7 @@ public class Target : MonoBehaviour
 
         if (!isBadTarget)
         {
-            GameManager.Instance.DeductLives();
+            GameManager.Instance.GoodTargetMissed();
         }
     }
 

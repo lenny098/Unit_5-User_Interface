@@ -2454,6 +2454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b01773a65c165148870b2cad175a86c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lives: 3
+  goodTargetScore: 5
+  badTargetScore: -10
+  easySpawnRate: 3
+  mediumSpawnRate: 2
+  hardSpawnRate: 1
   targets:
   - {fileID: 4960620337652901618, guid: 95eec16e8b2883e4aa1e20acc1a40a8e, type: 3}
   - {fileID: 5270724748713990727, guid: 99615df34ca17964ab1ffad7a5ee2135, type: 3}
@@ -2473,7 +2479,7 @@ Transform:
   m_GameObject: {fileID: 1729691780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.9338691, y: 2.7208898, z: -0.024865901}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
