@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI livesText;
 
-    public bool IsGameOver { get; private set; } = false;
     public bool IsGamePaused { get; private set; } = false;
 
     int score = 0;
@@ -78,9 +77,13 @@ public class GameManager : MonoBehaviour
 
     void GameOver()
     {
-        IsGameOver = true;
-
         CancelInvoke("SpawnTarget");
+
+        GameObject[] inGameTargets = GameObject.FindGameObjectsWithTag("Target");
+        foreach (GameObject inGameTarget in inGameTargets)
+        {
+            inGameTarget.GetComponent<Target>().DestroyByGameOver();
+        }
 
         gameOverUI.SetActive(true);
     }

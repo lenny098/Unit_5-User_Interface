@@ -12,11 +12,6 @@ public class Target : MonoBehaviour
         Instantiate(explosionParticle, transform.position, explosionParticle.transform.rotation);
     }
 
-    void DestroyByGameOver()
-    {
-        DestroyWithExplosion();
-    }
-
     void DestroyByMouse()
     {
         if (GameManager.Instance.IsGamePaused) { return; }
@@ -44,20 +39,14 @@ public class Target : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DestroyByGameOver()
     {
-        if (GameManager.Instance.IsGameOver)
-        {
-            DestroyByGameOver();
-        }
+        DestroyWithExplosion();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        GameObject other = collision.gameObject;
-
-        switch (other.tag)
+        switch (collision.gameObject.tag)
         {
             case "Mouse":
                 DestroyByMouse();
@@ -70,6 +59,14 @@ public class Target : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        DestroyByBound();
+        switch (other.gameObject.tag)
+        {
+            case "Sensor":
+                DestroyByBound();
+
+                break;
+            default:
+                break;
+        }
     }
 }
