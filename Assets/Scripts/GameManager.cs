@@ -13,6 +13,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] int goodTargetScore;
     [SerializeField] int badTargetScore;
 
+    [Header("Spawn Forces")]
+    [SerializeField] float upwardForceMin;
+    [SerializeField] float upwardForceMax;
+    [SerializeField] float TorqueForceMin;
+    [SerializeField] float TorqueForceMax;
+
     [Header("Spawn Rates")]
     [SerializeField] float easySpawnRate;
     [SerializeField] float mediumSpawnRate;
@@ -22,6 +28,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> targets;
 
     [Header("References")]
+    [SerializeField] GameObject spawnBoundsObject;
+
     [SerializeField] GameObject startUI;
     [SerializeField] GameObject gameOverUI;
     [SerializeField] GameObject pauseUI;
@@ -36,11 +44,26 @@ public class GameManager : MonoBehaviour
     float spawnRate;
 
     Dictionary<Difficulty, float> difficultySpawnRate;
+    Bounds spawnBounds;
+
+    Vector3 RandomTorque()
+    {
+        float RandomAxisTorque() { return Random.Range(TorqueForceMin, TorqueForceMax); }
+
+        return new Vector3(RandomAxisTorque(), RandomAxisTorque(), RandomAxisTorque());
+    }
 
     void SpawnTarget()
     {
-        int targetIndex = Random.Range(0, targets.Count);
-        Instantiate(targets[targetIndex]);
+        GameObject target = targets[Random.Range(0, targets.Count)];
+
+        float spawnX = Random.Range(spawnBounds.min.x, spawnBounds.max.x);
+        Vector3 position = new Vector3(spawnX, spawnBounds.center.y);
+
+        Rigidbody rigidbody = Instantiate(target, position, target.transform.rotation).GetComponent<Rigidbody>();
+
+        rigidbody.AddForce(Vector3.up * Random.Range(upwardForceMin, upwardForceMax), ForceMode.Impulse);
+        rigidbody.AddTorque(RandomTorque(), ForceMode.Impulse);
     }
 
     /* Game Flow */
@@ -135,6 +158,8 @@ public class GameManager : MonoBehaviour
             { Difficulty.Medium, mediumSpawnRate },
             { Difficulty.Hard, hardSpawnRate },
         };
+
+        spawnBounds = spawnBoundsObject.GetComponent<Renderer>().bounds;
 
         UpdateScoreUI();
         UpdateLivesUI();
