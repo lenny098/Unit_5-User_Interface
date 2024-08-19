@@ -14,8 +14,6 @@ public class Target : MonoBehaviour
 
     void DestroyByMouse()
     {
-        if (GameManager.Instance.IsGamePaused) { return; }
-
         DestroyWithExplosion();
 
         if (isBadTarget)

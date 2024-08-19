@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject spawnBoundsObject;
+    [SerializeField] GameObject mouseTrail;
 
     [SerializeField] GameObject startUI;
     [SerializeField] GameObject gameOverUI;
@@ -37,13 +38,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI livesText;
 
-    public bool IsGamePaused { get; private set; } = false;
+    bool isGamePaused = false;
 
     int score = 0;
     float spawnRate;
 
     Dictionary<Difficulty, float> difficultySpawnRate;
     Bounds spawnBounds;
+
+    const int LEFT_MOUSE_BUTTON = 0;
 
     Vector3 RandomTorque()
     {
@@ -90,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     void PauseGame()
     {
-        IsGamePaused = true;
+        isGamePaused = true;
 
         Time.timeScale = 0;
 
@@ -99,7 +102,7 @@ public class GameManager : MonoBehaviour
 
     void ResumeGame()
     {
-        IsGamePaused = false;
+        isGamePaused = false;
 
         Time.timeScale = 1;
 
@@ -173,7 +176,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (IsGamePaused)
+            if (isGamePaused)
             {
                 ResumeGame();
             }
@@ -181,6 +184,16 @@ public class GameManager : MonoBehaviour
             {
                 PauseGame();
             }
+        }
+
+        if (!isGamePaused && Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
+        {
+            mouseTrail.SetActive(true);
+        }
+
+        if (!isGamePaused && Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
+        {
+            mouseTrail.SetActive(false);
         }
     }
 }

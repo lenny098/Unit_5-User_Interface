@@ -1577,7 +1577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!96 &1100913328
 TrailRenderer:
   serializedVersion: 3
@@ -1586,7 +1586,7 @@ TrailRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1100913327}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1700,7 +1700,7 @@ Transform:
   m_GameObject: {fileID: 1100913327}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 525.25, y: 419.19, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1718,6 +1718,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a484bbc11ece657479f0434e4c5115e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnBound: {fileID: 1661837810}
 --- !u!65 &1100913331
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1735,7 +1736,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2576,6 +2577,7 @@ MonoBehaviour:
   - {fileID: 5541367573029925215, guid: d6766afc801bd634ea7976d59ada9790, type: 3}
   - {fileID: 7150147544935297778, guid: de9659891dcb6c944a987bcf0bf03997, type: 3}
   spawnBoundsObject: {fileID: 1661837810}
+  mouseTrail: {fileID: 1100913327}
   startUI: {fileID: 1040245107}
   gameOverUI: {fileID: 394969531}
   pauseUI: {fileID: 913336656}
