@@ -1,27 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(TrailRenderer), typeof(BoxCollider))]
 public class MouseTrail : MonoBehaviour
 {
+    [SerializeField] GameObject spawnBound;
+
+    TrailRenderer trailRenderer;
+    BoxCollider boxCollider;
+
+    bool isMouseDown = false;
+    float cameraToSpawn;
+
     const int LEFT_CLICK = 0;
-
-    private TrailRenderer trailRenderer;
-    private BoxCollider boxCollider;
-
-    private bool isMouseDown = false;
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-        trailRenderer = GetComponent<TrailRenderer>();
-        boxCollider = GetComponent<BoxCollider>();
-    }
 
     void EnableTrail()
     {
         isMouseDown = true;
+
         trailRenderer.enabled = true;
         boxCollider.enabled = true;
     }
@@ -29,19 +24,25 @@ public class MouseTrail : MonoBehaviour
     void DisableTrail()
     {
         isMouseDown = false;
+
+        // Setting the gameObject to inactive will stop Update()
         trailRenderer.enabled = false;
         boxCollider.enabled = false;
     }
 
     void UpdatePosition()
     {
-        Vector3 position = new Vector3(
-            Input.mousePosition.x,
-            Input.mousePosition.y,
-            transform.position.z - Camera.main.transform.position.z
-        );
+        Vector3 position = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraToSpawn);
 
-        gameObject.transform.position = Camera.main.ScreenToWorldPoint(position);
+        transform.position = Camera.main.ScreenToWorldPoint(position);
+    }
+
+    void Awake()
+    {
+        trailRenderer = GetComponent<TrailRenderer>();
+        boxCollider = GetComponent<BoxCollider>();
+
+        cameraToSpawn = spawnBound.transform.position.z - Camera.main.transform.position.z;
     }
 
     // Update is called once per frame
