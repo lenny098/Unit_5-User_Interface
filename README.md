@@ -15,3 +15,7 @@ In this Unit, you will program a game to test the player’s reflexes, where the
 - [x] **Expert:** Click-and-swipe
     - Program click-and-swipe functionality instead of clicking, generating a trail where the mouse has been dragged. This does make the game easier, so you might also want to increase the gameplay difficulty on all levels if you implement this.
 
+---
+
+### WebGL Build
+[Unity Play](https://play.unity.com/en/games/988b5a25-987b-4d40-a88d-315aa9b9aebe/webgl-builds)
