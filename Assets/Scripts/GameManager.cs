@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI livesText;
 
+    bool isGameStarted = false;
     bool isGamePaused = false;
 
     int score = 0;
@@ -76,6 +77,8 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("SpawnTarget", 0, spawnRate);
 
         startUI.SetActive(false);
+
+        isGameStarted = true;
     }
 
     void GameOver()
@@ -174,6 +177,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isGameStarted) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (isGamePaused)
@@ -186,14 +191,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (!isGamePaused && Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
+        if (!isGamePaused)
         {
-            mouseTrail.SetActive(true);
-        }
+            if (Input.GetMouseButtonDown(LEFT_MOUSE_BUTTON))
+            {
+                mouseTrail.SetActive(true);
+            }
 
-        if (!isGamePaused && Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
-        {
-            mouseTrail.SetActive(false);
+            if (Input.GetMouseButtonUp(LEFT_MOUSE_BUTTON))
+            {
+                mouseTrail.SetActive(false);
+            }
         }
     }
 }
